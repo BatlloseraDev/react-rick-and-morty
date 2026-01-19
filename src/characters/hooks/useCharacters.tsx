@@ -1,4 +1,4 @@
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCharactersByQuery } from "../actions/get-characters-by-query.action";
 import type { Character } from "../interfaces/character.interfaces.ts";
 
@@ -15,11 +15,11 @@ export const useCharacters = () =>{
             setIsLoading(true);
             query = query.trim().toLowerCase();
             if(query.length === 0){
-                const newCharacters = await getCharactersByQuery("/");
+                const newCharacters = await getCharactersByQuery("");
                 setCharacters(newCharacters);
             }
             else{
-                const newCharacters = await getCharactersByQuery(`/?name=${query}`);
+                const newCharacters = await getCharactersByQuery(`${query}`);
                 setCharacters(newCharacters);
             }
         }
