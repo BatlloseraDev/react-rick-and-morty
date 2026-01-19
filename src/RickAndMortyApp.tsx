@@ -5,7 +5,7 @@ import { SearchBar } from "./shared/components/SearchBar";
 
 
 export const RickAndMortyApp = () => {
-    const { characters, isLoading, hasError, handleSearch } = useCharacters();
+    const { characters, isLoading, hasError, handleSearch, handleLoadMore } = useCharacters();
 
     return (
         <>
@@ -17,6 +17,12 @@ export const RickAndMortyApp = () => {
             <SearchBar onQuery={handleSearch} />
             
             <CharacterResults characters={characters} isLoading={isLoading} hasError={hasError} />
+
+            <div className="container-button-loadmore">
+                <button onClick={handleLoadMore} className="btn-loadmore">
+                    Cargar más
+                </button>
+            </div>
 
 
 
