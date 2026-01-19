@@ -1,4 +1,4 @@
-export interface TopLevel {
+export interface RickAndMortyResponse {
     info:    Info;
     results: Result[];
 }
