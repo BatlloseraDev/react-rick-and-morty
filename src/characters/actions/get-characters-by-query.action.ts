@@ -1,4 +1,4 @@
-import { rickAndMortyApi } from "../api/rick-and-morty.api";
+import { rickAndMortyApi, checkErrorEmptySearchApi } from "../api/rick-and-morty.api";
 import type { Character } from "../interfaces/character.interfaces.ts";
 import type { RickAndMortyResponse } from "../interfaces/rick-and-morty.response.ts";
 
@@ -23,3 +23,8 @@ export const getCharactersByQuery = async (query: string, page: number= 1): Prom
         gender: char.gender
     }));
 };
+
+export const isEmptySearch = (error : any) =>{
+    return checkErrorEmptySearchApi(error); // se que queda raro pero no me parecía correcto llamar al archivo que se encarga del axios desde el propio componente
+    // tampoco me parecía correcto importar axios directamente en el componente
+}

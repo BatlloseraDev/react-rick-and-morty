@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import { getCharactersByQuery } from "../actions/get-characters-by-query.action";
+import { getCharactersByQuery, isEmptySearch } from "../actions/get-characters-by-query.action";
 import type { Character } from "../interfaces/character.interfaces.ts";
+
 
 export const useCharacters = () => {
 
@@ -26,6 +27,12 @@ export const useCharacters = () => {
 
         }//al crear el currentQuery ya no me hace falta hacer la distinción que hacia antes
         catch (error) {
+            if(isEmptySearch(error)){
+                setCharacters([]);
+                setHasError(false);
+                return;
+            }
+
             console.log(error);
             setHasError(true);
             setCharacters([]);
