@@ -12,6 +12,8 @@ export const useCharacters = () => {
     const [page, setPage] = useState<number>(1);
 
     const currentQuery = useRef<string>("");
+    const currentStatus = useRef<string>("");
+
 
     //Con useRef mantenemos la referencia entre renderizados (no se pierde al hacer rerender)
     //   const gifsCache = useRef<Record<string, Gif[]>>({});
@@ -20,7 +22,7 @@ export const useCharacters = () => {
 
 
     //de momento solo voy a manejar la busqueda normal
-    const handleSearch = async (query: string = "") => {
+    const handleSearch = async (query: string = "", status: string = "") => {
 
         setIsLoading(true);
         setHasError(false);
@@ -36,7 +38,7 @@ export const useCharacters = () => {
         }
 
         try {
-            const newCharacters = await getCharactersByQuery(currentQuery.current, 1);
+            const newCharacters = await getCharactersByQuery(currentQuery.current, 1, status);
             //si los he conseguido los guardo en la cache
             charactersCache.current[currentQuery.current] = newCharacters;
             setCharacters(newCharacters);
@@ -59,6 +61,13 @@ export const useCharacters = () => {
 
     }
 
+    const handleStatusFilter = (status: string)=>{
+        currentStatus.current = status;
+        setPage(1);//dudo si tengo que quitarlo o no
+        handleSearch(currentQuery.current, status);
+    }
+
+
     const handleLoadMore = async () => {
         const nextPage = page + 1;
 
@@ -78,7 +87,7 @@ export const useCharacters = () => {
             charactersCache.current[currentQuery.current+nextPage] = allCharacters; //aactualmente me estaba dando error por que la key volvía a repetirse pero al añadirle la pagina a la key se vuelve unico y no da problemas
         }
         catch (error) {
-            console.log("No hay más páginas o error mu gordo: ", error);
+            isEmptySearch(error) ? console.log("No hay más páginas") : console.log("Error mu gordo ", error);
         }
 
     };
@@ -92,6 +101,7 @@ export const useCharacters = () => {
         isLoading,
         hasError,
         handleSearch,
-        handleLoadMore
+        handleLoadMore,
+        handleStatusFilter
     }
 }
