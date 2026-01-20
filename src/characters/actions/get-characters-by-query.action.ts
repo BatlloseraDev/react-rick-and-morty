@@ -2,7 +2,7 @@ import { rickAndMortyApi, checkErrorEmptySearchApi } from "../api/rick-and-morty
 import type { Character } from "../interfaces/character.interfaces.ts";
 import type { RickAndMortyResponse } from "../interfaces/rick-and-morty.response.ts";
 
-export const getCharactersByQuery = async (query: string, page: number= 1, status: string = ""): Promise<Character[]> => {
+export const getCharactersByQuery = async (query: string, status: string = "", page: number= 1): Promise<Character[]> => {
     
     //si la query me viene vacia cargo la pagina  que quiera (es decir se ha hecho una consulta general de personajes)
     //si la query viene con un nombre hago la busqueda a partir de ese nombre

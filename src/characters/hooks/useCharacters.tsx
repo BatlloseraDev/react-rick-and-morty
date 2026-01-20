@@ -19,76 +19,99 @@ export const useCharacters = () => {
     //   const gifsCache = useRef<Record<string, Gif[]>>({});
     const charactersCache = useRef<Record<string, Character[]>>({});
 
+    const fetchData = async (query: string = "", status: string = "", pageNumber: number = 1) => {//función que me permite simplificar el código y evitar problemas con la caché
 
-
-    //de momento solo voy a manejar la busqueda normal
-    const handleSearch = async (query: string = "", status: string = "") => {
-
-        setIsLoading(true);
+        if(pageNumber === 1) setIsLoading(true);// si dejo esto por defecto en true para cualquier página me reinicia al inicio de la página
         setHasError(false);
         currentQuery.current = query.trim().toLowerCase();
-        setPage(1);
+        currentStatus.current = status;
+        setPage(pageNumber);
 
-        if(charactersCache.current[currentQuery.current]){
-            console.log(`He conseguido usar los datos de la cahe: ${currentQuery.current}`);
-            setCharacters(charactersCache.current[currentQuery.current]);
+        if (charactersCache.current[currentQuery.current + status + pageNumber]) {
+            console.log(`He conseguido usar los datos de la cahe: ${currentQuery.current} - status: ${status} - pagina: ${pageNumber}`);
+            setCharacters(charactersCache.current[currentQuery.current + status + pageNumber]);
             setHasError(false);
             setIsLoading(false);
+            setPage(pageNumber);
             return;
         }
 
         try {
-            const newCharacters = await getCharactersByQuery(currentQuery.current, 1, status);
-            //si los he conseguido los guardo en la cache
-            charactersCache.current[currentQuery.current] = newCharacters;
+            let newCharacters = await getCharactersByQuery(query, status, pageNumber);
+            if (pageNumber != 1) {
+                newCharacters = [...characters, ...newCharacters];
+            }
+            charactersCache.current[currentQuery.current + status + pageNumber] = newCharacters;
             setCharacters(newCharacters);
-
-        }//al crear el currentQuery ya no me hace falta hacer la distinción que hacia antes
-        catch (error) {
-            if(isEmptySearch(error)){
+        } catch (error) {
+            if (isEmptySearch(error) && pageNumber === 1) {
+                console.log("No hay resultados");
                 setCharacters([]);
                 setHasError(false);
                 return;
+            } else
+            if (isEmptySearch(error) && pageNumber !== 1) {
+                console.log("No hay más páginas");
+                alert("No hay más páginas");
+                setHasError(false);
+                setIsLoading(false);
+                return;
+            }else{
+                console.log("Error mu gordo ", error);
+                setHasError(true);
+                setCharacters([]);
+                
             }
-
-            console.log(error);
-            setHasError(true);
-            setCharacters([]);
-        }
-        finally {
-            setIsLoading(false);
+        } finally {
+            if (pageNumber === 1)
+                setIsLoading(false);
         }
 
     }
 
-    const handleStatusFilter = (status: string)=>{
+
+
+
+
+
+    //de momento solo voy a manejar la busqueda normal
+    const handleSearch = async (query: string = "") => {
+
+        currentQuery.current = query.trim().toLowerCase();
+        setPage(1);
+        fetchData(currentQuery.current, currentStatus.current, 1);
+
+    }
+
+    const handleStatusFilter = (status: string) => {
         currentStatus.current = status;
         setPage(1);//dudo si tengo que quitarlo o no
-        handleSearch(currentQuery.current, status);
+        fetchData(currentQuery.current, currentStatus.current, 1);
     }
 
 
     const handleLoadMore = async () => {
         const nextPage = page + 1;
+        fetchData(currentQuery.current, currentStatus.current, nextPage);
 
-        if(charactersCache.current[currentQuery.current+nextPage]){
-            console.log(`He conseguido usar los datos de la cahe en load more: ${currentQuery.current} - pagina: ${nextPage}`);
-            const newCharacters = charactersCache.current[(currentQuery.current+nextPage)];
-            setCharacters(newCharacters); // no hago [...characters, ...newCharacters] porque en este caso se guardó toda la lista entera
-            setPage(nextPage);
-            return;
-        }
+        // if (charactersCache.current[currentQuery.current +currentStatus.current + nextPage]) {
+        //     console.log(`He conseguido usar los datos de la cahe en load more: ${currentQuery.current} - status: ${currentStatus.current} - pagina: ${nextPage}`);
+        //     const newCharacters = charactersCache.current[(currentQuery.current+currentStatus.current + nextPage)];
+        //     setCharacters(newCharacters); // no hago [...characters, ...newCharacters] porque en este caso se guardó toda la lista entera
+        //     setPage(nextPage);
+        //     return;
+        // }
 
-        try {
-            const newCharacters = await getCharactersByQuery(currentQuery.current, nextPage);
-            const allCharacters = [...characters, ...newCharacters]; //lo modularizo para ser más eficiente
-            setCharacters(allCharacters);// añado los nuevo resultado a los anteriores
-            setPage(nextPage);
-            charactersCache.current[currentQuery.current+nextPage] = allCharacters; //aactualmente me estaba dando error por que la key volvía a repetirse pero al añadirle la pagina a la key se vuelve unico y no da problemas
-        }
-        catch (error) {
-            isEmptySearch(error) ? console.log("No hay más páginas") : console.log("Error mu gordo ", error);
-        }
+        // try {
+        //     const newCharacters = await getCharactersByQuery(currentQuery.current,currentStatus.current,  nextPage);
+        //     const allCharacters = [...characters, ...newCharacters]; //lo modularizo para ser más eficiente
+        //     setCharacters(allCharacters);// añado los nuevo resultado a los anteriores
+        //     setPage(nextPage);
+        //     charactersCache.current[currentQuery.current+currentStatus.current + nextPage] = allCharacters; //aactualmente me estaba dando error por que la key volvía a repetirse pero al añadirle la pagina a la key se vuelve unico y no da problemas
+        // }
+        // catch (error) {
+        //     isEmptySearch(error) ? console.log("No hay más páginas") : console.log("Error mu gordo ", error);
+        // }
 
     };
 
