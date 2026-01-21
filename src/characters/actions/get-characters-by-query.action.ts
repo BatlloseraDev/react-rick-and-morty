@@ -29,7 +29,10 @@ export const getCharactersByQuery = async (query: string, status: string = "", p
         image: char.image,
         status: char.status,
         species: char.species,
-        gender: char.gender
+        gender: char.gender,
+        //datos nuevos para el modal
+        origin: char.origin,
+        location: char.location
     }));
 };
 

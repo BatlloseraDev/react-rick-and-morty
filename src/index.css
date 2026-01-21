@@ -1,15 +1,20 @@
 :root {
-  
-  --bg-color: #f8f9fa;       /* Fondo gris muy claro */
-  --card-bg: #ffffff;        /* Fondo blanco para tarjetas */
-  --text-primary: #333333;   /* Texto principal oscuro pero no negro puro */
-  --text-secondary: #666666; /* Texto secundario */
-  --accent-color: #00b5cc;   /* Color de acento  */
+
+  --bg-color: #f8f9fa;
+  /* Fondo gris muy claro */
+  --card-bg: #ffffff;
+  /* Fondo blanco para tarjetas */
+  --text-primary: #333333;
+  /* Texto principal oscuro pero no negro puro */
+  --text-secondary: #666666;
+  /* Texto secundario */
+  --accent-color: #00b5cc;
+  /* Color de acento  */
   --accent-hover: #009aa6;
-  --border-radius: 16px;    
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+  --border-radius: 16px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
   --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -55,6 +60,7 @@ hr {
   margin: 2rem 0;
   width: 100%;
 }
+
 /* Componente: src/shared/components/SearchBar.tsx */
 .search-bar {
   display: flex;
@@ -68,7 +74,8 @@ hr {
   padding: 1rem 1.5rem;
   font-size: 1rem;
   border: 1px solid #e0e0e0;
-  border-radius: 50px; /* Estilo píldora */
+  border-radius: 50px;
+  /* Estilo píldora */
   background-color: var(--card-bg);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
@@ -150,7 +157,7 @@ hr {
 
 .card img {
   width: 100%;
-  aspect-ratio: 1/1; 
+  aspect-ratio: 1/1;
   object-fit: cover;
   display: block;
 }
@@ -225,11 +232,126 @@ hr {
   color: #e74c3c;
 }
 
+/* Componente: src/characters/components/CharacterLayout.tsx */
+.main-layout {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr;
+    transition: all 0.3s ease; 
+}
+
+/* Cuando el aside está activo */
+.main-layout.with-aside {
+    grid-template-columns: 1fr 250px;
+}
+
+/* Componente: src/characters/components/CharacterDetailAside.tsx */
+.character-aside {
+  background-color: #f8f9fa;
+  border-left: 1px solid #dee2e6;
+  padding: 20px;
+  height: calc(100vh - 100px);/* Altura de la pantalla menos el header */
+  overflow-y: auto;
+  position: sticky;
+  top: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.aside-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 10px;
+}
+
+.aside-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding: 10px;
+}
+
+.aside-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.text-primary {
+    color: orange; 
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 10px 0 20px 0;
+    text-align: center;
+}
+
+
+.aside-list-group {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+    width: 110%; 
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden; 
+}
+
+
+.aside-list-group-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid #e9ecef;
+    color: #495057;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between; 
+    align-items: right;
+}
+
+
+.aside-list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Efecto hover en las filas de la lista */
+.aside-list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+
 @media (max-width: 768px) {
   #root {
     padding: 1rem;
   }
-  
+
   .content-center h1 {
     font-size: 2rem;
   }
@@ -238,4 +360,20 @@ hr {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1rem;
   }
+
+  .character-aside {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    z-index: 100;
+    border-top: 2px solid #ccc;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .main-layout.with-aside {
+        grid-template-columns: 1fr; /* Volvemos a una columna */
+    }
 }

@@ -8,8 +8,9 @@ export const useCharacters = () => {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [hasError, setHasError] = useState<boolean>(false);
-
     const [page, setPage] = useState<number>(1);
+
+    const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
 
     const currentQuery = useRef<string>("");
     const currentStatus = useRef<string>("");
@@ -85,7 +86,7 @@ export const useCharacters = () => {
 
     const handleStatusFilter = (status: string) => {
         currentStatus.current = status;
-        setPage(1);//dudo si tengo que quitarlo o no
+        setPage(1);
         fetchData(currentQuery.current, currentStatus.current, 1);
     }
 
@@ -93,27 +94,15 @@ export const useCharacters = () => {
     const handleLoadMore = async () => {
         const nextPage = page + 1;
         fetchData(currentQuery.current, currentStatus.current, nextPage);
-
-        // if (charactersCache.current[currentQuery.current +currentStatus.current + nextPage]) {
-        //     console.log(`He conseguido usar los datos de la cahe en load more: ${currentQuery.current} - status: ${currentStatus.current} - pagina: ${nextPage}`);
-        //     const newCharacters = charactersCache.current[(currentQuery.current+currentStatus.current + nextPage)];
-        //     setCharacters(newCharacters); // no hago [...characters, ...newCharacters] porque en este caso se guardó toda la lista entera
-        //     setPage(nextPage);
-        //     return;
-        // }
-
-        // try {
-        //     const newCharacters = await getCharactersByQuery(currentQuery.current,currentStatus.current,  nextPage);
-        //     const allCharacters = [...characters, ...newCharacters]; //lo modularizo para ser más eficiente
-        //     setCharacters(allCharacters);// añado los nuevo resultado a los anteriores
-        //     setPage(nextPage);
-        //     charactersCache.current[currentQuery.current+currentStatus.current + nextPage] = allCharacters; //aactualmente me estaba dando error por que la key volvía a repetirse pero al añadirle la pagina a la key se vuelve unico y no da problemas
-        // }
-        // catch (error) {
-        //     isEmptySearch(error) ? console.log("No hay más páginas") : console.log("Error mu gordo ", error);
-        // }
-
     };
+
+    const onCharacterSelected = (character: Character) => {
+        setSelectedCharacter(character);
+    }
+
+    const onCloseModal = () => {
+        setSelectedCharacter(null);
+    }
 
     useEffect(() => {
         handleSearch();
@@ -125,6 +114,9 @@ export const useCharacters = () => {
         hasError,
         handleSearch,
         handleLoadMore,
-        handleStatusFilter
+        handleStatusFilter,
+        selectedCharacter,
+        onCharacterSelected,
+        onCloseModal
     }
 }

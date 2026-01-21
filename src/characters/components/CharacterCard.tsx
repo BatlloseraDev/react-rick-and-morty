@@ -4,16 +4,16 @@ import type { Character } from "../interfaces/character.interfaces";
 
 interface Props{
     character: Character;
+    onCharacterSelected: (character: Character) => void;
 }
 
-export const CharacterCard = ({character}: Props) => {
+export const CharacterCard = ({character, onCharacterSelected}: Props) => {
     return (
-        <div className="card">
+        <div className="card" onClick={() => onCharacterSelected(character)}>
             <img src={character.image} alt={character.name} />
             <div className="card-body">
                 <h3>{character.name}</h3>
                 <p>Status: {character.status}</p>
-                <p>Species: {character.species}</p>
                 <p>Gender: {character.gender}</p>
             </div>
         </div>

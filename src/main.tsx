@@ -6,7 +6,7 @@ import { RickAndMortyApp } from './RickAndMortyApp'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <h1>Goodbye World</h1>
+    {/* <h1>Goodbye World</h1> */}
     <RickAndMortyApp />
   </StrictMode>,
 )

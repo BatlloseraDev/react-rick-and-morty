@@ -7,4 +7,14 @@ export interface Character {
     status: string;
     species: string;
     gender: string;
+
+    //datos nuevos para el modal
+    origin: {
+        name: string;
+        url: string;
+    };
+    location: {
+        name: string;
+        url: string;
+    }
 }

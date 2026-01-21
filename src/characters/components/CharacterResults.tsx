@@ -5,9 +5,10 @@ interface Props {
     characters: Character[];
     isLoading: boolean;
     hasError: boolean;
+    onCharacterSelected: (character: Character) => void;
 }
 
-export const CharacterResults = ({ characters, isLoading, hasError }: Props) => {
+export const CharacterResults = ({ characters, isLoading, hasError, onCharacterSelected }: Props) => {
     if (isLoading) {
         return <div className="loading-alert">Cargando personajes</div>;
     }
@@ -20,5 +21,5 @@ export const CharacterResults = ({ characters, isLoading, hasError }: Props) => 
         return <p>No se encontraron personajes.</p>;
     }
 
-    return <CharacterList characters={characters} />;
+    return <CharacterList characters={characters} onCharacterSelected={onCharacterSelected}/>;
 };
