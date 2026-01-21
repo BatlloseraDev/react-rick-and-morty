@@ -24,6 +24,8 @@ export const RickAndMortyApp = () => {
 
             <CharacterResults characters={characters} isLoading={isLoading} hasError={hasError} />
 
+            {/* La barra lateral de información del personaje debería de ir aquí */}
+
             <LoadMore onLoadMore={handleLoadMore} />
 
         </>

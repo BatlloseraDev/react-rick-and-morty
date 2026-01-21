@@ -1,0 +1,241 @@
+:root {
+  
+  --bg-color: #f8f9fa;       /* Fondo gris muy claro */
+  --card-bg: #ffffff;        /* Fondo blanco para tarjetas */
+  --text-primary: #333333;   /* Texto principal oscuro pero no negro puro */
+  --text-secondary: #666666; /* Texto secundario */
+  --accent-color: #00b5cc;   /* Color de acento  */
+  --accent-hover: #009aa6;
+  --border-radius: 16px;    
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+  --font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* Reset básico y estilos globales */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Componente: src/shared/components/customHeader.tsx */
+.content-center {
+  text-align: center;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.content-center h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.05rem;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 2rem 0;
+  width: 100%;
+}
+/* Componente: src/shared/components/SearchBar.tsx */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px; /* Estilo píldora */
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(0, 181, 204, 0.1);
+}
+
+
+/* Componente: src/characters/components/StatusFilter.tsx */
+.status-filter {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.status-filter label {
+  cursor: pointer;
+  padding: 0.5rem 1.25rem;
+  border-radius: 50px;
+  background-color: #e9ecef;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Ocultar el radio button nativo pero mantener accesibilidad */
+.status-filter input[type="radio"] {
+  appearance: none;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+
+/* Estilo cuando el radio está seleccionado (usando :has para navegadores modernos) */
+.status-filter label:has(input:checked),
+.status-filter label:active {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+
+/* Componente: src/characters/components/CharacterList.tsx */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+
+/* Componente: src/characters/components/CharacterCard.tsx */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card img {
+  width: 100%;
+  aspect-ratio: 1/1; 
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-body h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-body p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.25rem;
+}
+
+.card-body p:last-child {
+  border-bottom: none;
+}
+
+/* Componente: src/shared/components/LoadMore.tsx */
+.container-button-loadmore {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+}
+
+.btn-loadmore {
+  background-color: transparent;
+  color: var(--accent-color);
+  border: 2px solid var(--accent-color);
+  padding: 0.75rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-loadmore:hover {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+/* Componente: src/characters/components/CharacterResults.tsx */
+.loading-alert,
+.error-alert {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  grid-column: 1 / -1;
+}
+
+.error-alert {
+  color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  
+  .content-center h1 {
+    font-size: 2rem;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}

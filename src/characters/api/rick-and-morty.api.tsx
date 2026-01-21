@@ -6,9 +6,5 @@ export const rickAndMortyApi = axios.create({
 
 
 export const checkErrorEmptySearchApi = (error: any) =>{ 
-  if(axios.isAxiosError(error) && error.response?.status === 404){
-    return true;
-  }
-  return false;
-
+  return axios.isAxiosError(error) && error.response?.status === 404;
 }
